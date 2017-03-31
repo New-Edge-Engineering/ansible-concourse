@@ -5,13 +5,12 @@ An easy way to deploy and manage a [Concourse CI](http://concourse.ci/) with a c
 * Platforms
   * Ubuntu 14.04/16.04
   * MacOS (Early support. Accepting PRs)
-  * Redhat 7 (WIP. Accepting PRs)
   * Windows (not supported yet. Accepting PRs)
 
 * Ansible 2.0 or higher
 * PostgreSQL I recommend [ansible postgresql role](https://github.com/ANXS/postgresql)
-* Optional SSL termination service 
- * Use concourse web argument to configure SSL
+* Optional TLS termination
+ * Use concourse web argument to configure TLS
  * [ansible nginx role](https://github.com/AutomationWithAnsible/ansible-nginx)
 
 ## Overview
@@ -23,14 +22,18 @@ Please look at [config section](https://github.com/ahelal/ansible-concourse#conf
 
 ## vagrant demo
 You can use vagrant to spin a test machine.
+
 ```
 vagrant up
 ```
+
 The vagrant machine will have an IP of **192.168.50.150**
 
 You can access the web and API on port 8080 with username **myuser** and **mypass**
+
 Once your done
-````
+
+```
 vagrant destroy
 ```
 
@@ -71,6 +74,7 @@ ci.example.com
   roles:
     - { name: "ansible-concourse", tags: "concourse"  }
 ```
+
 ```yaml
 ---
 - name: Create worker nodes
@@ -123,7 +127,7 @@ You would need to generate 2 keys for web and one key for each worker node.
 An easy way to generate your keys to use a script in ```keys/key.sh```
 
 The bash script will ask you for the number of workers you require. It will then generate ansible compatible yaml files in ```keys/vars```
-You can than copy the content in your group vars or pass it somehow.
+You can than copy the content in your group vars or anyother method you prefer.
 
 ## Default variables
 ```yaml
@@ -151,7 +155,7 @@ concourseci_group                           : "concourseci"
 CONCOURSE_WEB_BIND_IP                       : "0.0.0.0"
 CONCOURSE_WEB_BIND_PORT                     : "8080"
 #CONCOURSE_WEB_EXTERNAL_URL                  : "http://127.0.0.1:8080" #URL used to reach any ATC from the outside world.
-# Concourse TSA Config
+## Concourse TSA Config
 CONCOURSE_WEB_TSA_HOST                      : "{{ groups[concourseci_web_group][0] }}" # By default we pick the first host in web group
 CONCOURSE_WEB_TSA_BIND_IP                   : "0.0.0.0"
 CONCOURSE_WEB_TSA_BIND_PORT                 : "2222"
@@ -327,7 +331,6 @@ concourse_ignore_errors                       : "{{ ansible_lsb['codename'] == '
 * Support pipeline upload
 * Full MacOS support
 * Add distributed cluster tests
-* Redhat Support
 * Windows support
 
 ## License
