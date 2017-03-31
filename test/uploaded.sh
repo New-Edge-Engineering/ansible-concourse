@@ -1,11 +1,11 @@
 # Upload pipeline
-fly -t docker sp -p test  -c tests/test-pipeline.yml -n
+fly -t docker sp -p test  -c test/test-pipeline.yml -n
 # unpause pipeline
 fly -t docker unpause-pipeline -p test
 # Trigger job
 fly -t docker trigger-job -j test/job-hello-world
 COUNTER=0
-pending() { /Users/ahelal/bin//fly -t docker builds | grep test/job-hello-world | grep pending; }
+pending() { fly -t docker builds | grep test/job-hello-world | grep pending; }
 pending
 pending_rc=$?
 while [ "${pending_rc}" == "0" ]; do
